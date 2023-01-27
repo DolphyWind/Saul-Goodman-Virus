@@ -1,3 +1,6 @@
 # Saul-Goodman-Virus
-A fun virus that turns focused video into 3d Saul Goodman video.
-### DolphyWind/Saul-Goodman-Virus is the only official repository for this program. Please do not download this program from anywhere else without seeing the source code.
+**Previous repo had errors. I had to recreate the repo.**
+
+A fun little program that plays the video below on the focused window. (With sound)
+
+![Saul Goodman Video](./saul.gif)
