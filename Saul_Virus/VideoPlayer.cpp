@@ -1,21 +1,27 @@
 #include "VideoPlayer.hpp"
+#include <fstream>
 
 VideoPlayer::VideoPlayer(std::string frameFoldername, std::string audioFilename):
 	m_frameFoldername(frameFoldername), m_audioFilename(audioFilename)
 {
+	m_textureLoader = std::thread{ [this]() {
+			this->loadTextures();
+		}
+	};
 	loadMusicFile();
-	loadTextures();
-	m_timePerFrame = sf::seconds(m_music.getDuration().asSeconds() / double(m_textures.size()));
-	m_music.play();
+	sf::sleep(sf::seconds(0.1f));
+	m_timePerFrame = sf::seconds(0.033356f);
+	if(m_musicLoaded)
+		m_music.play();
 }
 
 void VideoPlayer::loadMusicFile()
 {
 	if (!m_music.openFromFile(m_audioFilename))
 	{
-		MessageBoxA(NULL, std::string("Cannot open \"" + m_audioFilename + "\"").c_str(), "Error!", MB_OK | MB_ICONERROR);
-		std::exit(EXIT_FAILURE);
+		return;
 	}
+	m_musicLoaded = true;
 	m_music.setLoop(true);
 }
 
@@ -65,7 +71,10 @@ sf::Texture& VideoPlayer::getCurrentTexture()
 
 void VideoPlayer::restart()
 {
-	m_music.stop();
-	m_music.play();
+	if (m_musicLoaded)
+	{
+		m_music.stop();
+		m_music.play();
+	}
 	m_currentIndex = 0;
 }

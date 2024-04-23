@@ -7,6 +7,7 @@
 #include <SFML/Audio.hpp>
 #include <Windows.h>
 #include <filesystem>
+#include <thread>
 namespace fs = std::filesystem;
 
 class VideoPlayer
@@ -19,9 +20,11 @@ private:
 	sf::Time m_timePerFrame;
 	std::size_t m_currentIndex = 0;
 	sf::Time m_timer;
+	bool m_musicLoaded = false;
+	std::thread m_textureLoader;
 public:
 	VideoPlayer(std::string frameFoldername, std::string audioFilename);
-	~VideoPlayer() {}
+	~VideoPlayer() { m_textureLoader.join(); }
 
 	void loadMusicFile();
 	void loadTextures();
